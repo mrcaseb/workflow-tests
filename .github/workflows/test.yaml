@@ -1,0 +1,32 @@
+on:
+  workflow_dispatch:
+    inputs:
+      season_rebuild:
+        description: 'Rebuild Season (9999 defaults to latest season)'
+        required: false
+        default: 9999
+        type: number
+      full_rebuild:
+        description: 'Full Rebuild (overwrites above season)'
+        required: true
+        default: false
+        type: boolean
+
+name: Update PBP Related Data
+
+jobs:
+  job1:
+    runs-on: ubuntu-latest
+    # Map a step output to a job output
+    outputs:
+      output1: ${{ steps.step1.outputs.test }}
+    steps:
+      - id: step1
+        run: echo "seasons=$(gh release list -R nflverse/nflverse-pbp --json tagName --jq '[.[].tagName | match("\\d+") | .string ]')" >> "$GITHUB_OUTPUT"
+  job2:
+    runs-on: ubuntu-latest
+    needs: job1
+    steps:
+      - env:
+          OUTPUT1: ${{needs.job1.outputs.output1}}
+        run: echo "$OUTPUT1"
