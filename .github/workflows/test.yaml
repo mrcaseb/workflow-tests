@@ -24,12 +24,13 @@ jobs:
       GH_TOKEN: ${{ github.token }}
     steps:
       - id: step1
-        run: echo "seasons=$(gh release list -R nflverse/nflverse-pbp --json tagName --jq '[.[].tagName | match("\\d+") | .string ]')" >> "$GITHUB_OUTPUT"
-  job2:
-    runs-on: ubuntu-latest
-    needs: job1
-    env:
-      OUTPUT1: ${{fromJson(needs.job1.outputs.output1)}}
-    steps:
-      - id: step2
-        run: echo "$OUTPUT1"
+        run:  |
+          echo "seasons=$(gh release list -R nflverse/nflverse-pbp --json tagName --jq '[.[].tagName | match("\\d+") | .string ]')"
+  # job2:
+  #   runs-on: ubuntu-latest
+  #   needs: job1
+  #   env:
+  #     OUTPUT1: ${{ fromJson(needs.job1.outputs.output1) }}
+  #   steps:
+  #     - id: step2
+  #       run: echo "$OUTPUT1"
