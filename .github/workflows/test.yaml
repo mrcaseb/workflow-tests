@@ -20,6 +20,8 @@ jobs:
     # Map a step output to a job output
     outputs:
       output1: ${{ steps.step1.outputs.test }}
+    env:
+      GH_TOKEN: ${{ github.token }}
     steps:
       - id: step1
         run: echo "seasons=$(gh release list -R nflverse/nflverse-pbp --json tagName --jq '[.[].tagName | match("\\d+") | .string ]')" >> "$GITHUB_OUTPUT"
